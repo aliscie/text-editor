@@ -2,20 +2,49 @@ import React, {useEffect} from 'react';
 import './style.css';
 import EditorToolBar from "../specific_components/editor_toolbar";
 import EditorComponent from "./editor_component";
-import {Provider} from "react-redux";
-import {rootReducer} from "../redux/main";
-import {createStore} from "redux";
 import EditorContext from "./editor_context";
+import {Provider} from 'react-redux';
+import { createStore } from 'redux';
 
-const store = createStore(rootReducer);
+export type AppState = {
+  count: number;
+}
+
+type AppAction = {
+  type: string;
+}
+
+const initialState: AppState = {
+  count: 0,
+}
+
+function rootReducer(state: AppState = initialState, action: AppAction): AppState {
+  switch(action.type) {
+    case 'INCREMENT':
+      return {
+        count: state.count + 1,
+      };
+    default:
+      return state;
+  }
+}
+
+export const store = createStore(rootReducer);
 
 
 function Editor(props: any) {
 
+
     let ElementRenderer = props.element_render;
 
 
+    // let data = store.getState().data.;
+    // const data: any = useSelector(
+    //     (state: RootState) => state.data
+    // );
+    let [data, setData] = React.useState<any>(props.data);
     let [state, setState] = React.useState<string>('');
+
     let elements = document.querySelectorAll('[placeholder]');
     useEffect(() => {
         elements.forEach((element: any) => {
@@ -30,14 +59,14 @@ function Editor(props: any) {
 
         });
     }, [elements])
-
-
     return (
         <div
             onKeyDown={(e) => {
-                setState(`${e.currentTarget.textContent}`)
+
                 if (e.key == 'Enter') {
                     e.preventDefault();
+                } else {
+                    setState(`${e.currentTarget.textContent}`)
                 }
             }}
 
@@ -49,15 +78,10 @@ function Editor(props: any) {
                 <EditorContext.Provider value={{element_renderer: ElementRenderer}}>
                     <EditorToolBar/>
                     {
-                        props.data.map((item: any, index: number) => {
-                            return <EditorComponent
-                                children={item.children}
-                                key={index}
-                                tag={item.tag}
-                                content={item.content}
-                                attributes={item.attributes}
-                            />
-                        })
+                        <EditorComponent
+                            children={data}
+                            tag={"span"}
+                        />
                     }
                 </EditorContext.Provider>
             </Provider>

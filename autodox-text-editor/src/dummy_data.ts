@@ -1,7 +1,8 @@
 const my_dummies = [
-    {tag: 'h1', children: [{content: "hello world"}]},
+    {tag: 'h3', children: [{content: "hello world"}]},
     {
         tag: 'p',
+        // condition: "if user age >= 18"
         children: [{content: "loerm ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. loerm ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod."}]
     },
     {
@@ -15,7 +16,5 @@ const my_dummies = [
             {content: "  more text"}
         ]
     },
-
-
 ];
 export default my_dummies;
