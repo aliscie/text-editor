@@ -3,66 +3,60 @@ import './style.css';
 import EditorToolBar from "../specific_components/editor_toolbar";
 import EditorComponent from "./editor_component";
 import EditorContext from "./editor_context";
-import {Provider} from 'react-redux';
-import { createStore } from 'redux';
+import {Provider, useSelector} from 'react-redux';
+import {createStore} from 'redux';
 
 export type AppState = {
-  count: number;
+    data: any;
 }
 
 type AppAction = {
-  type: string;
+    id?: any;
+    data?: any;
+    index?: any;
+    type: string;
 }
 
 const initialState: AppState = {
-  count: 0,
+    data: [{}],
 }
 
 function rootReducer(state: AppState = initialState, action: AppAction): AppState {
-  switch(action.type) {
-    case 'INCREMENT':
-      return {
-        count: state.count + 1,
-      };
-    default:
-      return state;
-  }
+    switch (action.type) {
+        case 'INIT':
+            return {
+                data: action.data
+            };
+        case 'INCREMENT':
+            let data = state.data.slice();
+            let len = state.data.length;
+
+            let new_item = {"data-empty":"true", id: action.id, tag: 'h3', children: [{content: ""}]};
+            data.splice(action.index + 1, 0, new_item)
+
+            return {
+                ...state,
+                data: data
+            };
+        default:
+            return state;
+    }
 }
 
 export const store = createStore(rootReducer);
 
+function EditorProvider(props: any) {
+    useEffect(() => {
+        store.dispatch({type: 'INIT', data: props.data});
+    }, [])
 
-function Editor(props: any) {
-
-
-    let ElementRenderer = props.element_render;
-
-
-    // let data = store.getState().data.;
-    // const data: any = useSelector(
-    //     (state: RootState) => state.data
-    // );
-    let [data, setData] = React.useState<any>(props.data);
+    const data = useSelector((state: AppState) => state.data);
     let [state, setState] = React.useState<string>('');
 
     let elements = document.querySelectorAll('[placeholder]');
-    useEffect(() => {
-        elements.forEach((element: any) => {
-            element.addEventListener('keyup', (e: any) => {
-                let content = e.currentTarget.textContent;
-                if (content.length == 1 && e.currentTarget.getAttribute('data-empty') == 'false') {
-                    e.currentTarget.setAttribute('data-empty', 'true');
-                } else if (e.currentTarget.getAttribute('data-empty') == 'true') {
-                    e.currentTarget.removeAttribute('data-empty');
-                }
-            });
-
-        });
-    }, [elements])
     return (
-        <div
+        <span
             onKeyDown={(e) => {
-
                 if (e.key == 'Enter') {
                     e.preventDefault();
                 } else {
@@ -70,23 +64,28 @@ function Editor(props: any) {
                 }
             }}
 
-            suppressContentEditableWarning
-            contentEditable
             className="Editor">
 
-            <Provider store={store}>
-                <EditorContext.Provider value={{element_renderer: ElementRenderer}}>
-                    <EditorToolBar/>
-                    {
-                        <EditorComponent
-                            children={data}
-                            tag={"span"}
-                        />
-                    }
-                </EditorContext.Provider>
-            </Provider>
-        </div>
+            <EditorToolBar/>
+            {
+                <EditorComponent
+                    children={data}
+                    tag={"span"}
+                />
+            }
+
+        </span>
     );
+}
+
+function Editor(props: any) {
+    let ElementRenderer = props.element_render;
+
+    return <Provider store={store}>
+        <EditorContext.Provider value={{element_renderer: ElementRenderer}}>
+            <EditorProvider {...props}/>
+        </EditorContext.Provider>
+    </Provider>
 }
 
 export default Editor;

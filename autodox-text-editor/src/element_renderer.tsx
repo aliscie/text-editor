@@ -16,7 +16,7 @@ function EditorRenderer(props: RendererProps) {
     let Tag = tag || "span";
     switch (tag) {
         case "quote":
-            return <Quote>{children}</Quote>;
+            return <Quote {...props}>{children}</Quote>;
         // case "table":
         //     return <table/>;
         // case "image":
@@ -38,6 +38,7 @@ function EditorRenderer(props: RendererProps) {
         default:
             return (<Tag
                 style={{margin: 0}}
+                {...props}
                 placeholder={"enter somthing..."}
                 {...attributes}>{children}</Tag>)
     }
