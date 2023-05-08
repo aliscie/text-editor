@@ -5,6 +5,10 @@ import EditorComponent from "./editor_component";
 import EditorContext from "./editor_context";
 import {Provider, useSelector} from 'react-redux';
 import {createStore} from 'redux';
+import {parentIndex} from "../utiles/parent_index";
+import {removeItemAtIndex} from "../utiles/remove_at_Index";
+import {updateItem} from "../utiles/update_items";
+
 
 export type AppState = {
     data: any;
@@ -12,31 +16,47 @@ export type AppState = {
 
 type AppAction = {
     id?: any;
+    item_id?: any;
     data?: any;
     index?: any;
     type: string;
+    new_item?: any;
 }
 
 const initialState: AppState = {
     data: [{}],
 }
 
+
 function rootReducer(state: AppState = initialState, action: AppAction): AppState {
+    let parent = parentIndex(action.item_id, state.data);
+    let data = state.data.slice();
+
     switch (action.type) {
         case 'INIT':
             return {
                 data: action.data
             };
-        case 'INCREMENT':
-            let data = state.data.slice();
-            let len = state.data.length;
-
-            let new_item = {"data-empty":"true", id: action.id, tag: 'h3', children: [{content: ""}]};
-            data.splice(action.index + 1, 0, new_item)
-
+        case 'INSERT':
+            parent = parent === -1 ? action.index : parent;
+            data.splice(parent + 1, 0, action.new_item)
             return {
                 ...state,
                 data: data
+            };
+        case 'UPDATE':
+            data = updateItem(action.item_id, data, action.data);
+            return {
+                ...state,
+                data
+            };
+
+        case 'DELETE':
+            let remove_item = parent;
+            remove_item = parent === -1 && action.index;
+            data = removeItemAtIndex(data, remove_item);
+            return {
+                ...state, data
             };
         default:
             return state;
@@ -53,11 +73,10 @@ function EditorProvider(props: any) {
     const data = useSelector((state: AppState) => state.data);
     let [state, setState] = React.useState<string>('');
 
-    let elements = document.querySelectorAll('[placeholder]');
     return (
         <span
             onKeyDown={(e) => {
-                if (e.key == 'Enter') {
+                if (e.key === 'Enter') {
                     e.preventDefault();
                 } else {
                     setState(`${e.currentTarget.textContent}`)

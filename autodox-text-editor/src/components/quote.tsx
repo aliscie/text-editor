@@ -11,12 +11,14 @@ export function Quote(props:any) {
     }
 
     return (
-        <p
+        <span
+            //
+            id={props.id}
             style={{margin: 0, color: "lightgreen"}}
             ref={ref}
             placeholder={"enter somthing..."}>
             {props.children}
-        </p>
+        </span>
     );
 
 }

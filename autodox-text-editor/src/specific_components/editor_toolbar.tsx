@@ -1,8 +1,9 @@
 import {useState} from "react";
 import useSelectPop from "../plugins/tool_bar/toolbar";
+import {store} from "../editor/editor";
 
 const EditorToolBar = () => {
-    const {selectedText, showPopup, position} = useSelectPop();
+    const {selectedElement, selectedText, showPopup, position} = useSelectPop();
 
     const popoverStyles: React.CSSProperties = {
         position: "absolute",
@@ -12,10 +13,25 @@ const EditorToolBar = () => {
         userSelect: "none",
     };
 
+    function handleBold() {
+        // TODO
+        //     store.dispatch({
+        //         type: 'INSERT',
+        //         id: "new",
+        //         item_id: selectedElement?.id,
+        //         new_item: {tag: "b", content: "selectedText"},
+        //     });
+        //     store.dispatch({
+        //         type: 'UPDATE',
+        //         data: {content: "selectedText"},
+        //         item_id: selectedElement?.id
+        //     });
+    }
+
     return (
         <>
             <div className="popover" style={popoverStyles}>
-                <button>B</button>
+                <button onClick={handleBold}>B</button>
                 <button>I</button>
                 <button>U</button>
             </div>
