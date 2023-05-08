@@ -1,3 +1,5 @@
+import {generateId} from "./utiles/generate_id";
+
 const my_dummies = [
     {tag: 'h3', children: [{id: "p2", content: "hello world"}], id: "p3",},
     {
@@ -17,10 +19,22 @@ const my_dummies = [
 
     {
         tag: 'p',
-        id: "p_id_4",
+        id: generateId(),
         children: [
-            {id: "random_id_3", content: "small text", children: [{type: "leaf", content: "nested child", tag: "b"}]},
-            {content: "  more text"}
+            {
+                id: "random_id_3",
+                children: [
+                    {id: generateId(), type: "leaf", content: "sample 1", tag: "span"},
+                    {id: generateId(), type: "leaf", content: "sample 2", tag: "span"},
+                ]
+            },
+            {
+                id: generateId(),
+                type: "leaf",
+                content: "nested child",
+                tag: "b"
+            },
+            {content: "  more text", id: generateId()}
         ],
 
     },

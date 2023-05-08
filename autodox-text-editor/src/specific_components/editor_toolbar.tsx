@@ -14,7 +14,7 @@ const EditorToolBar = () => {
     };
 
     function handleBold() {
-        // TODO
+        // TODO make text bold by modifying the actual data and re-render it
         //     store.dispatch({
         //         type: 'INSERT',
         //         id: "new",

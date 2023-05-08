@@ -5,7 +5,7 @@ import EditorComponent from "./editor_component";
 import EditorContext from "./editor_context";
 import {Provider, useSelector} from 'react-redux';
 import {createStore} from 'redux';
-import {parentIndex} from "../utiles/parent_index";
+import {insertItem, topParentIndex} from "../utiles/parent_index";
 import {removeItemAtIndex} from "../utiles/remove_at_Index";
 import {updateItem} from "../utiles/update_items";
 
@@ -29,7 +29,7 @@ const initialState: AppState = {
 
 
 function rootReducer(state: AppState = initialState, action: AppAction): AppState {
-    let parent = parentIndex(action.item_id, state.data);
+    let parent = topParentIndex(action.item_id, state.data);
     let data = state.data.slice();
 
     switch (action.type) {
@@ -39,7 +39,7 @@ function rootReducer(state: AppState = initialState, action: AppAction): AppStat
             };
         case 'INSERT':
             parent = parent === -1 ? action.index : parent;
-            data.splice(parent + 1, 0, action.new_item)
+            insertItem(action.item_id, data, action.new_item);
             return {
                 ...state,
                 data: data
