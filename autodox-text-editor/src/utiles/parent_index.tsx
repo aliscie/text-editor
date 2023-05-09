@@ -35,12 +35,10 @@ export function insertItem(targetId: string, data: any[], new_item: any): number
     for (let i = 0; i < data.length; i++) {
         const item = data[i];
         if (item.id === targetId) {
-
-            let followElements = data.splice(i );
             // TODO Why they show empty or somtimes just one child despite there are many childs?
-             console.log("followElements",followElements);
-
-            new_item.children = [...new_item.children, ...followElements];
+            //     let followElements = data.splice(i );
+            //      console.log("followElements",followElements);
+            //         new_item.children = [...new_item.children, ...followElements];
             data.splice(i + 1, 0, new_item);
             return i;
         }
