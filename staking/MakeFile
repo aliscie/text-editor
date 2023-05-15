@@ -1,4 +1,0 @@
-run:
-	 node get_validator.js
-run_stake:
-	node create_stake_account.js
