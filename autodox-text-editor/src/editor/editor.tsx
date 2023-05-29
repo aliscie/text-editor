@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import './style.css';
-import EditorToolBar from "../specific_components/editor_toolbar";
 import EditorComponent from "./editor_component";
 import EditorContext from "./editor_context";
 import {Provider, useSelector} from 'react-redux';
@@ -8,6 +7,7 @@ import {createStore} from 'redux';
 import {insertItem, topParentIndex} from "../utiles/parent_index";
 import {removeItemAtIndex} from "../utiles/remove_at_Index";
 import {updateItem} from "../utiles/update_items";
+import plugins from "../plugins/main";
 
 
 export type AppState = {
@@ -72,20 +72,28 @@ function EditorProvider(props: any) {
 
     const data = useSelector((state: AppState) => state.data);
     let [state, setState] = React.useState<string>('');
+    let editorRef = React.useRef<HTMLSpanElement>(null);
+
+    let onKeyDown = (e: any) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        } else {
+            setState(`${e.currentTarget.textContent}`)
+        }
+    }
+    let onChange = (e: any) => {
+    }
 
     return (
         <span
-            onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                } else {
-                    setState(`${e.currentTarget.textContent}`)
-                }
-            }}
+            ref={editorRef}
+            id="text_editor"
+            onKeyDown={onKeyDown}
+            onChange={onChange}
 
             className="Editor">
 
-            <EditorToolBar/>
+            {editorRef.current && plugins(editorRef.current)}
             {
                 <EditorComponent
                     children={data}

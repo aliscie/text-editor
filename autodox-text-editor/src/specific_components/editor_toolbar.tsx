@@ -1,9 +1,7 @@
-import {useState} from "react";
 import useSelectPop from "../plugins/tool_bar/toolbar";
-import {store} from "../editor/editor";
 
-const EditorToolBar = () => {
-    const {selectedElement, selectedText, showPopup, position} = useSelectPop();
+const EditorToolBar = (props: any) => {
+    const {selectedElement, selectedText, showPopup, position} = useSelectPop(props.editor);
 
     const popoverStyles: React.CSSProperties = {
         position: "absolute",
