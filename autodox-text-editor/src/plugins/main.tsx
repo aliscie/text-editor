@@ -1,9 +1,9 @@
-import EditorToolBar from "../specific_components/editor_toolbar";
 import React from "react";
+import {HoveringToolbar} from "./toolbar";
 
-let plugins = (editor: any) => {
+let plugins = (editor?: any) => {
     return [
-        <EditorToolBar editor={editor}/>,
+        <HoveringToolbar/>
     ]
 }
 export default plugins;
