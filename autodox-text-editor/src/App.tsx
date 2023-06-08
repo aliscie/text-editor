@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Editor from "./slate_editor/main";
+import {Editor} from "./slate_editor/main";
 
 const initialValue: any[] = [
     {

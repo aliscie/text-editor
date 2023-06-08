@@ -7,7 +7,7 @@ import plugins from "../plugins/main";
 import SearchHighlightingExample from "../plugins/search_highlight";
 import {css} from "@emotion/css";
 
-const Editor = (props: any) => {
+export const Editor = (props: any) => {
     const [search, setSearch] = useState<string | undefined>()
     const editor = useMemo(() => withHistory(withReact(createEditor())), [])
     let {decorate} = SearchHighlightingExample(search);
@@ -66,4 +66,4 @@ const Leaf = ({attributes, children, leaf}) => {
 }
 
 
-export default Editor
+// export default Editor

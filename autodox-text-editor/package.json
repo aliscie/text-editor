@@ -1,13 +1,15 @@
 {
   "files": [
-    "src/**/*"
+    "src/**/*",
+    "lib"
   ],
   "prepublish": "tsc",
-  "name": "autodox-text-editor",
-  "version": "0.1.23",
+  "name": "autodox-editor",
+  "version": "0.1.5",m
   "private": false,
-  "main": "./src/index.js",
-  "module": "./src/index.js",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "types": "types/index.d.ts",
   "dependencies": {
     "@emotion/css": "^11.11.0",
     "@reduxjs/toolkit": "^1.9.3",
@@ -16,8 +18,6 @@
     "@testing-library/user-event": "^13.2.1",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.13",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
     "@types/react-redux": "^7.1.25",
     "@types/redux": "^3.6.0",
     "@types/redux-thunk": "^2.1.0",
@@ -28,13 +28,15 @@
     "react-scripts": "5.0.1",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
+    "slate": "^0.94.1",
     "slate-history": "^0.93.0",
-    "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "babel src --out-dir dist --extensions \".ts,.tsx\"",
+    "build:esm": "tsc",
+    "build:cis": "tsc --module Commons --outDir dist/cis",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
@@ -59,7 +61,16 @@
     ]
   },
   "devDependencies": {
+    "@babel/cli": "^7.21.5",
+    "@babel/core": "^7.22.1",
+    "@babel/preset-env": "^7.22.4",
+    "@babel/preset-react": "^7.22.3",
+    "@babel/preset-typescript": "^7.21.5",
     "@types/is-hotkey": "^0.1.7",
-    "@types/slate-react": "^0.50.1"
+    "@types/react": "^18.2.9",
+    "@types/react-dom": "^18.2.4",
+    "@types/slate-react": "^0.50.1",
+    "babel-loader": "^9.1.2",
+    "typescript": "^4.9.5"
   }
 }

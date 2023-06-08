@@ -1,2 +1,4 @@
 run:
 	yarn start
+generate:
+	npx tsc --declaration --allowJs --emitDeclarationOnly --declarationDir types
